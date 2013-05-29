@@ -1,6 +1,17 @@
 # PrettyQr
 
-TODO: Write a gem description
+## Overview
+
+pretty_qr is a library based on [rQrCode] (http://github.com/whomwah/rqrcode) built to make beautiful QR codes. 
+
+What it can do for now : 
+* QR codes are rendered with rounded corners
+* You can specify colors : foreground, background, marking corners. 
+
+## Resources
+* QR code is a registered trademark by [Denso Wave inc] (http://www.qrcode.com/en/)
+* This gem is based on [rQRCode] (http://github.com/whomwah/rqrcode)
+* THis work is inspired by [liquidcode] (http://github.com/jooray/liquidcode)
 
 ## Installation
 
