@@ -34,6 +34,13 @@ module PrettyQr
         @block_size           = options[:block_size]          || 16
       end
 
+      # Defining the radius of rounded corner
+      if options[:radius].present? and options[:radius].is_a?(Fixnum) and options[:radius].between?(0, 100)
+        @half_block_size        = block_size * options[:radius] / 100
+      else
+        @half_block_size        = block_size / 3
+      end
+
       # The final image size is defined from the size of a block
       # Not exactly the size provided in the options
       @image_size             = @block_size * qr_code_size
@@ -83,7 +90,7 @@ module PrettyQr
       canvas.stroke_width(1)
 
       bs = block_size
-      hbs = block_size / 3
+      hbs = half_block_size
 
       qr_code.modules.each_index do |x|
         qr_code.modules.each_index do |y|
@@ -142,7 +149,6 @@ module PrettyQr
     def render_to_file(string)
       @image = ::Magick::Image.new(image_size, image_size) do
         self.background_color = 'transparent'
-        self.format = "png"
       end
 
       canvas.draw(image)
