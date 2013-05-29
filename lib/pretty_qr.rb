@@ -11,8 +11,8 @@ module PrettyQr
   class QrCode
     attr_reader :original_qr_code, :qr_code, :qr_code_size
     attr_reader :foreground_color, :background_color, :corners_color
-    attr_reader :block_size, :image_size
-    attr_reader :image, :canvas
+    attr_reader :block_size, :image_size, :half_block_size
+    attr_reader :image, :canvas, :logo
 
     def initialize(string, options = {})
       if !string.is_a? String
@@ -36,9 +36,9 @@ module PrettyQr
 
       # Defining the radius of rounded corner
       if options[:radius].present? and options[:radius].is_a?(Fixnum) and options[:radius].between?(0, 100)
-        @half_block_size        = block_size * options[:radius] / 100
+        @half_block_size      = block_size * options[:radius] / 100
       else
-        @half_block_size        = block_size / 3
+        @half_block_size      = block_size / 3
       end
 
       # The final image size is defined from the size of a block
@@ -48,8 +48,31 @@ module PrettyQr
       # We keep in memory the original qr_code
       @qr_code                = @original_qr_code
 
+      # If a logo is provided, we remove the center of the qr code and replace it with the logo
+      # TODO : make it flexible
+      if options[:logo_path].present? and options[:logo_path].is_a? String and File.exists?(options[:logo_path])
+        
+        qr_code.modules.each_index do |x|
+          qr_code.modules.each_index do |y|
+            qr_code.modules[x][y] = false if x.between?(qr_code_size/3, qr_code_size*2/3) && y.between?(qr_code_size/3, qr_code_size*2/3)
+          end
+        end
+
+        puts qr_code.to_s
+        puts qr_code_size
+
+        logo_width  = (qr_code_size / 3 + 1) * block_size
+        logo_height = (qr_code_size / 3 * 3/4 + 1) * block_size
+        @logo                 = Magick::Image.read(options[:logo_path]).first.resize_to_fit(logo_width, logo_height)
+      end # if logo_path
+
       # Processing the image to canvas
       self.process
+
+      # Writing to file if necessary
+      self.render_to_file options[:filename] if options[:filename].present? and options[:filename].is_a? String
+
+      return self
       
     end # initialize
 
@@ -152,8 +175,8 @@ module PrettyQr
       end
 
       canvas.draw(image)
-
-      return image.write(string)
+      
+      logo.present? ? image.composite(logo, Magick::CenterGravity, Magick::OverCompositeOp).write(string) : image.write(string)
     end # render_to_file
 
     def minimum_qr_size_from_string(str)
