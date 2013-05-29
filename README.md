@@ -27,9 +27,14 @@ Or install it yourself as:
 
     $ gem install pretty_qr
 
-## Usage
+## Basic Usage
 
-TODO: Write usage instructions here
+    qr_code = PrettyQr::QrCode.new('http://google.com', { block_size: 10, foreground_color: 'purple' })
+    qr_code.render_to_file 'examples/images/basic.png'
+    
+It gives you a file like 
+
+![Basic image](/examples/images/basic.png)
 
 ## Contributing
 
