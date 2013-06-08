@@ -36,6 +36,14 @@ It gives you a file like
 
 ![Basic image](/examples/images/basic.png)
 
+## Custom corners
+
+Use the option : ```corners_color``` to make a different color in the corners. 
+    
+It gives you a qr_code a bit more beautiful
+
+![Basic image](/examples/images/custom_corners.png)
+
 ## Contributing
 
 1. Fork it
