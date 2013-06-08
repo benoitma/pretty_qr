@@ -70,7 +70,8 @@ module PrettyQr
       self.process
 
       # Writing to file if necessary
-      self.render_to_file options[:filename] if options[:filename].present? and options[:filename].is_a? String
+      filename      = options[:filename]
+      self.render_to_file filename if filename.present? and filename.is_a? String
 
       return self
       
@@ -176,7 +177,8 @@ module PrettyQr
 
       canvas.draw(image)
       
-      logo.present? ? image.composite(logo, Magick::CenterGravity, Magick::OverCompositeOp).write(string) : image.write(string)
+      image = image.composite(logo, Magick::CenterGravity, Magick::OverCompositeOp) if logo.present? 
+      image.write(string)
     end # render_to_file
 
     def minimum_qr_size_from_string(str)
