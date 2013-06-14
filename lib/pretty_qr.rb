@@ -1,6 +1,6 @@
 require "pretty_qr/version"
-require 'rqrcode'
 require "rmagick"
+require 'rqrcode'
 require 'tempfile'
 
 module PrettyQr
