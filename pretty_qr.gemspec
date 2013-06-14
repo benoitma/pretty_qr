@@ -22,5 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
 
   spec.add_dependency 'rqrcode-rails3'
-  spec.add_dependency 'mini_magick'
+  spec.add_dependency "rmagick"
+  spec.add_dependency 'tempfile'
 end
