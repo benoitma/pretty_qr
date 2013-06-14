@@ -1,5 +1,5 @@
 require "pretty_qr/version"
-require 'rqrcode-rails3'
+require 'rqrcode'
 require "rmagick"
 require 'tempfile'
 
