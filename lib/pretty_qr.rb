@@ -1,6 +1,7 @@
 require "pretty_qr/version"
 require 'tempfile'
 require 'rqrcode'
+require 'rmagick'
 
 module PrettyQr
 
@@ -27,14 +28,14 @@ module PrettyQr
       @corners_color          = options[:corners_color]       || self.foreground_color
 
       # Defining the final block_size and image_size are linked
-      if options[:image_size].present? && options[:image_size].is_a?(Fixnum)
+      if !options[:image_size].nil? && options[:image_size].is_a?(Fixnum)
         @block_size           = options[:image_size] / qr_code_size
       else
         @block_size           = options[:block_size]          || 16
       end
 
       # Defining the radius of rounded corner
-      if options[:radius].present? and options[:radius].is_a?(Fixnum) and options[:radius].between?(0, 100)
+      if !options[:radius].nil? and options[:radius].is_a?(Fixnum) and options[:radius].between?(0, 100)
         @half_block_size      = block_size * options[:radius] / 100
       else
         @half_block_size      = block_size / 3
@@ -49,7 +50,7 @@ module PrettyQr
 
       # If a logo is provided, we remove the center of the qr code and replace it with the logo
       # TODO : make it flexible
-      if options[:logo_path].present? and options[:logo_path].is_a? String and File.exists?(options[:logo_path])
+      if !options[:logo_path].nil? and options[:logo_path].is_a? String and File.exists?(options[:logo_path])
         
         qr_code.modules.each_index do |x|
           qr_code.modules.each_index do |y|
@@ -70,7 +71,7 @@ module PrettyQr
 
       # Writing to file if necessary
       filename      = options[:filename]
-      self.render_to_file filename if filename.present? and filename.is_a? String
+      self.render_to_file filename if !filename.nil? and filename.is_a? String
 
       return self
       
