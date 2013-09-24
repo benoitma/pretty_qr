@@ -171,13 +171,13 @@ module PrettyQr
     end # process
 
     def render_to_file(string)
-      @image = ::Magick::Image.new(image_size, image_size) do
+      image = ::Magick::Image.new(image_size, image_size) do
         self.background_color = 'transparent'
       end
 
       canvas.draw(image)
       
-      image = image.composite(logo, Magick::CenterGravity, Magick::OverCompositeOp) if logo.present? 
+      image = image.composite(logo, Magick::CenterGravity, Magick::OverCompositeOp) unless logo.nil?
       image.write(string)
     end # render_to_file
 
