@@ -24,7 +24,7 @@ module PrettyQr
 
       # Defining the different colors used into the QR code
       @foreground_color       = options[:foreground_color]    || 'black'
-      @background_color       = options[:background_color]    || 'white'
+      @background_color       = options[:background_color]    || 'transparent'
       @corners_color          = options[:corners_color]       || self.foreground_color
 
       # Defining the final block_size and image_size are linked
@@ -58,8 +58,8 @@ module PrettyQr
           end
         end
 
-        puts qr_code.to_s
-        puts qr_code_size
+        # puts qr_code.to_s
+        # puts qr_code_size
 
         logo_width  = (qr_code_size / 3 + 1) * block_size
         logo_height = (qr_code_size / 3 * 3/4 + 1) * block_size
