@@ -34,7 +34,7 @@ Or install it yourself as:
     
 It gives you a file like 
 
-![Basic image](/examples/images/basic.png)
+![Basic image](https://raw2.github.com/benoitma/pretty_qr/master/examples/images/basic.png)
 
 ## Custom corners
 
@@ -42,7 +42,7 @@ Use the option : ```corners_color``` to make a different color in the corners.
     
 It gives you a qr_code a bit more beautiful
 
-![Basic image](/examples/images/custom_corners.png)
+![Basic image](https://raw2.github.com/benoitma/pretty_qr/master/examples/images/basic.png)
 
 ## Contributing
 
