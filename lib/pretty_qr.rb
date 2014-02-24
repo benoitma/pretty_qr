@@ -10,7 +10,7 @@ module PrettyQr
 
   class QrCode
     attr_reader :original_qr_code, :qr_code, :qr_code_size
-    attr_reader :foreground_color, :background_color, :corners_color
+    attr_reader :foreground_color, :background_color, :corners_color, :in_corners_color
     attr_reader :block_size, :image_size, :half_block_size
     attr_reader :image, :canvas, :logo
 
@@ -26,6 +26,7 @@ module PrettyQr
       @foreground_color       = options[:foreground_color]    || 'black'
       @background_color       = options[:background_color]    || 'transparent'
       @corners_color          = options[:corners_color]       || self.foreground_color
+      @in_corners_color       = options[:in_corners_color]    || self.foreground_color
 
       # Defining the final block_size and image_size are linked
       if !options[:image_size].nil? && options[:image_size].is_a?(Fixnum)
@@ -97,7 +98,7 @@ module PrettyQr
       # First condition : x or y in the good column or row
       # Second condition : we're not in the bottom right corner
       # Third condition : we're not in the middle
-      change_colors_for_black_corners = lambda { |x, y|
+      change_color_for_black_corners = lambda { |x, y|
         ([0, 6, qr_code_size-1, qr_code_size-7] & [x, y]).count > 0 and  x + y < qr_code_size + 6 and ((7..qr_code_size-8).to_a & [x, y]).count == 0
       }
 
@@ -105,6 +106,10 @@ module PrettyQr
       # Second condition : we're not in the middle
       change_color_for_white_corners = lambda { |x, y|
         ([1, 5] & [x, y]).count > 0 and ((7..qr_code_size-8).to_a & [x, y]).count == 0
+      }
+
+      change_color_for_in_corners = lambda { |x, y|
+        (x.between?(2, 5) && (y.between?(2, 5) || y.between?(qr_code_size - 5, qr_code_size - 2))) || (y.between?(2, 5) && x.between?(qr_code_size - 5, qr_code_size - 2))
       }
 
       switch_color.call(background_color)
@@ -119,7 +124,8 @@ module PrettyQr
       qr_code.modules.each_index do |x|
         qr_code.modules.each_index do |y|
           if is_dark.call(x,y)
-            switch_color.call(corners_color) if change_colors_for_black_corners.call(x, y)
+            switch_color.call(corners_color) if change_color_for_black_corners.call(x, y)
+            switch_color.call(in_corners_color) if change_color_for_in_corners.call(x, y)
 
             canvas.roundrectangle(x * bs, y * bs, (x+1) * bs, (y+1) * bs, hbs, hbs)
             if (is_dark.call(x,y+1))
