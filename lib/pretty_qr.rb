@@ -89,7 +89,7 @@ module PrettyQr
 
       is_dark = lambda { |x, y| 
         begin
-          qr_code.is_dark(y,x)
+          qr_code.checked?(y,x)
         rescue IndexError, RQRCode::QRCodeRunTimeError
           return false
         end
