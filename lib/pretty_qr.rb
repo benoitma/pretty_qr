@@ -19,7 +19,7 @@ module PrettyQr
         raise QRCodeArgumentError, "The passed data is #{string.class}, not String"
       end
 
-      @original_qr_code       = ::RQRCode::QRCode.new(string , size: minimum_qr_size_from_string(string), level: :h)
+      @original_qr_code       = ::RQRCodeCore::QRCode.new(string , size: minimum_qr_size_from_string(string), level: :h)
       @qr_code_size           = original_qr_code.modules.count
 
       # Defining the different colors used into the QR code
